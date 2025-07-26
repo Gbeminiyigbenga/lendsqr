@@ -1,19 +1,21 @@
+cat > fly.toml << 'EOF'
 app = "lendsqr-wallet"
+primary_region = "dfw"
 
 [build]
-  dockerfile = "Dockerfile"
 
 [env]
+  NODE_ENV = "production"
   PORT = "3000"
 
-[[services]]
+[http_service]
   internal_port = 3000
-  protocol = "tcp"
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
 
-  [[services.ports]]
-    handlers = ["http"]
-    port = 80
-
-  [[services.ports]]
-    handlers = ["tls", "http"]
-    port = 443
+[[vm]]
+  memory = "512mb"
+  cpu_kind = "shared"
+  cpus = 1
+EOF
